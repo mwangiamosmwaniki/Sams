@@ -1,0 +1,11 @@
+{% load static %}
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static 'subscriptions/styles.css' %}">
+</head>
+{% if subscription %}
+<p>Amount Paid: Ksh{{ subscription.amount_paid }}</p>
+<p>Expiry Time: {{ subscription.expiry_time }}</p>
+<p>Status: {% if subscription.is_active %}Active{% else %}Expired{% endif %}</p>
+{% else %}
+<p>No active subscription.</p>
+{% endif %}

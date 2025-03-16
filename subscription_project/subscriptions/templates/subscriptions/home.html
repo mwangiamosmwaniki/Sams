@@ -1,0 +1,420 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subscription & Payment</title>
+    <link rel="icon" type="image/png" href="static/subscriptions/image/mesm.png">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: url('static/subscriptions/image/sam.jpg') no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            padding: 20px;
+        }
+        h1{
+            color: white;
+            align-items: center;
+            text-align: center;
+        }
+        h2 {
+            color: rgb(255, 238, 0);
+            text-decoration: underline;
+            background: rgba(0, 0, 0, 0.9);
+            text-align: center;
+            width: 60%;
+            max-width: 400px;
+            margin: 20px auto;
+            padding: 10px;
+            border-radius: 10px;
+        }
+
+        h3{
+            color:white;
+        }
+        .instructions {
+            background: rgba(255, 255, 255, 0.7);
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            margin-top: 10px;
+        }
+        .instructions h2 {
+            font-size: 20px;
+            color: white;
+            text-decoration: underline;
+        }
+        .instructions p {
+            font-size: 16px;
+            color: rgb(0,0,0);
+            line-height: 1.6;
+        }
+        .container {
+            width: 90%;
+            max-width: 700px;
+            margin: auto;
+            text-align: center;
+        }
+        .plans, .section {
+            background-color: rgb(14, 49, 78);
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            margin-top: 10px;
+        }
+        .plans {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .plan {
+            width: 180px;
+            text-align: center;
+            border: 2px solid red;
+            padding: 10px;
+            border-radius: 8px;
+        }
+        .plan h3 {
+            color: rgb(30, 255, 0);
+        }
+        small{
+            color: white;
+        }
+        .plan p {
+            font-size: 23px;
+            font-weight: bold;
+            color:rgb(255, 187, 0);
+        }
+        .btn {
+            padding: 8px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            width: 60%;
+            margin-top: 8px;
+        }
+        .btn:hover {
+            background-color: #218838;
+        }
+        .input-field, .submit-btn {
+            width: 70%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .submit-btn {
+            background-color:rgb(51, 247, 2);
+            color: white;
+            cursor: pointer;
+            width: 27%;
+            font-size: 18px;
+        }
+        .submit-btn:hover {
+            background-color:rgb(255, 167, 3);
+        }
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+        .modal-content {
+            background: rgba(0,0,0,0.7);
+            margin: 15% auto;
+            padding: 20px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .close {
+            float: right;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        .status-message {
+            margin-top: 10px;
+            padding: 10px;
+            display: none;
+            border-radius: 5px;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .section{
+            background: rgba(0, 0, 0, 0.7)
+        }
+        .section p{
+            color: white;
+        }
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+                background-size: cover; /* Ensure background scales properly */
+            }
+
+            h2 {
+                width: 90%; /* Adjusted width for smaller screens */
+                font-size: 18px; /* Reduce font size for better readability */
+            }
+
+            .container {
+                width: 100%;
+            }
+
+            .plan {
+                width: 100%;
+                max-width: 180px;
+            }
+
+            .btn, .submit-btn {
+                width: 100%; /* Full width buttons for easier tapping */
+                font-size: 16px;
+                padding: 12px;
+            }
+
+            .input-field {
+                width: 100%; /* Full width inputs */
+                font-size: 16px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+<h1>SAM'S WIFI LOGIN</h1>
+<div class="container">
+    <div class="instructions">
+        <h2>How To Purchase:</h2>
+        <p>1. Tap the buy button on your preferred package.</p>
+        <p>2. Enter your phone number.</p>
+        <p>3. Click "PAY NOW".</p>
+        <p>4. Enter your M-Pesa PIN, wait for 30 seconds for M-Pesa authentication.</p>
+        <p class="contact">(CUSTOMER CARE CONTACT: <strong>0715825808</strong>)</p>
+    </div>
+    <h2>Choose a Subscription Plan</h2>
+    <div class="plans">
+        {% for plan in plans %}
+        <div class="plan">
+            <h3>{{ plan.validity }}</h3>
+            <p>Ksh {{ plan.amount }}</p>
+            <small>10Mbps max</small>
+            <button class="btn" onclick="openModal('{{ plan.amount }}')">Buy</button>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- M-Pesa Code Upload -->
+    <!-- M-Pesa Code Upload Form -->
+    <div class="section">
+        <h3>Upload M-Pesa Payment Code</h3>
+        <form action="{% url 'upload_mpesa' %}" method="POST">
+            {% csrf_token %}
+            <input type="text" name="mpesa_code" class="input-field" placeholder="Enter M-Pesa Code" required>
+            <button type="submit" class="submit-btn">Submit Payment</button>
+        </form>
+    </div>
+    {% if messages %}
+        <div>
+            {% for message in messages %}
+                <p class="{{ message.tags }}">{{ message }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+
+    <!-- Voucher Entry -->
+    <div class="section">
+        <h3>Enter Voucher Code</h3>
+        <p>(Call admin for voucher recharge in case your payment is not successful)</p>
+        <form action="{% url 'redeem_voucher' %}" method="POST">
+            {% csrf_token %}
+            <input type="text" name="voucher_code" class="input-field" placeholder="Enter Voucher Code" required>
+            <button type="submit" class="submit-btn">Redeem</button>
+        </form>
+    </div>
+
+    <!-- Login Form -->
+    <div class="section">
+        <h3>Sam's WIFI Login</h3>
+        <p>(Enter your username plus password to log in.)</p>
+        <form action="{% url 'login' %}" method="POST">
+            {% csrf_token %}
+            <input type="text" name="username" class="input-field" placeholder="Username" required>
+            <input type="password" name="password" class="input-field" placeholder="Password" required>
+            <button type="submit" class="submit-btn">Login</button>
+        </form>
+    </div>
+</div>
+
+<!-- Subscription Modal -->
+<div id="subscriptionModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h3>Enter Safaricom Phone Number</h3>
+        <input type="hidden" id="selectedAmount">
+        <input type="text" id="phoneNumber" class="input-field" required>
+        <button class="submit-btn" onclick="sendSTKPush()">BUY NOW</button>
+        <div id="statusMessage" class="status-message"></div>
+    </div>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Handle M-Pesa Code Submission
+        let mpesaForm = document.querySelector("form[action='{% url 'upload_mpesa' %}']");
+        let mpesaSubmitBtn = mpesaForm.querySelector(".submit-btn");
+        let mpesaMessageDiv = document.createElement("div"); // Message display area
+        mpesaMessageDiv.id = "mpesaMessage";
+        mpesaMessageDiv.style.marginTop = "10px";
+        mpesaMessageDiv.style.fontWeight = "bold";
+        mpesaForm.insertBefore(mpesaMessageDiv, mpesaSubmitBtn.nextSibling); // Insert below button
+
+        mpesaForm.addEventListener("submit", function (event) {
+            event.preventDefault(); // Prevent normal form submission
+
+            let formData = new FormData(mpesaForm);
+            mpesaMessageDiv.innerHTML = "⏳ Processing...";
+            mpesaMessageDiv.style.color = "blue";
+
+            fetch(mpesaForm.action, {
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": "{{ csrf_token }}"
+                },
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    mpesaMessageDiv.innerHTML = "✅ " + data.message;
+                    mpesaMessageDiv.style.color = "green";
+                    mpesaForm.reset();
+                } else {
+                    mpesaMessageDiv.innerHTML = "❌ " + data.message;
+                    mpesaMessageDiv.style.color = "red";
+                }
+            })
+            .catch(error => {
+                mpesaMessageDiv.innerHTML = "❌ Error processing M-Pesa code.";
+                mpesaMessageDiv.style.color = "red";
+            });
+        });
+
+        // Handle Voucher Code Redemption
+        let voucherForm = document.querySelector("form[action='{% url 'redeem_voucher' %}']");
+        let voucherSubmitBtn = voucherForm.querySelector(".submit-btn");
+        let voucherMessageDiv = document.createElement("div"); // Message display area
+        voucherMessageDiv.id = "voucherMessage";
+        voucherMessageDiv.style.marginTop = "10px";
+        voucherMessageDiv.style.fontWeight = "bold";
+        voucherForm.insertBefore(voucherMessageDiv, voucherSubmitBtn.nextSibling); // Insert below button
+
+        voucherForm.addEventListener("submit", function (event) {
+            event.preventDefault(); // Prevent normal form submission
+
+            let formData = new FormData(voucherForm);
+            voucherMessageDiv.innerHTML = "⏳ Processing...";
+            voucherMessageDiv.style.color = "yellow";
+
+            fetch(voucherForm.action, {
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": "{{ csrf_token }}"
+                },
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    voucherMessageDiv.innerHTML = "✅ " + data.message;
+                    voucherMessageDiv.style.color = "green";
+                    voucherForm.reset();
+                } else {
+                    voucherMessageDiv.innerHTML = "❌ " + data.message;
+                    voucherMessageDiv.style.color = "white";
+                }
+            })
+            .catch(error => {
+                voucherMessageDiv.innerHTML = "❌ Error processing voucher.";
+                voucherMessageDiv.style.color = "white";
+            });
+        });
+
+        // Handle STK Push request
+        window.sendSTKPush = function () {
+            let phone = document.getElementById("phoneNumber").value;
+            let amount = document.getElementById("selectedAmount").value;
+            let statusMessage = document.getElementById("statusMessage");
+
+            if (!(phone.startsWith("07") || phone.startsWith("01")) || phone.length !== 10) {
+                statusMessage.innerHTML = "❌ Invalid phone number.";
+                statusMessage.className = "status-message error";
+                statusMessage.style.color = "white";
+                statusMessage.style.display = "block";
+                return;
+            }
+
+            statusMessage.innerHTML = "⏳ Sending STK Push...";
+            statusMessage.style.color = "yellow";
+            statusMessage.style.display = "block";
+
+            fetch("{% url 'stk_push_request' %}", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": "{{ csrf_token }}"
+                },
+                body: JSON.stringify({ phone_number: phone, subscription: amount })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === "success") {
+                    statusMessage.innerHTML = "✅ STK Push sent! Enter M-Pesa PIN.";
+                    statusMessage.style.color = "green";
+                } else {
+                    statusMessage.innerHTML = "❌ STK Push failed.";
+                    statusMessage.style.color = "white";
+                }
+                statusMessage.style.display = "block";
+            })
+            .catch(error => {
+                statusMessage.innerHTML = "❌ Error processing request.";
+                statusMessage.style.color = "white";
+                statusMessage.style.display = "block";
+            });
+        };
+
+        // Open Modal for STK Push
+        window.openModal = function (amount) {
+            document.getElementById("selectedAmount").value = amount;
+            document.getElementById("subscriptionModal").style.display = "block";
+        };
+
+        // Close Modal
+        window.closeModal = function () {
+            document.getElementById("subscriptionModal").style.display = "none";
+        };
+    });
+</script>
+
+</body>
+</html>

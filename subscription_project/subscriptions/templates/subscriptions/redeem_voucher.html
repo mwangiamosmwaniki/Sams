@@ -1,0 +1,12 @@
+{% load static %}
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static 'subscriptions/styles.css' %}">
+    </head>
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Redeem</button>
+</form>
+{% if error %}
+<p>{{ error }}</p>
+{% endif %}
